@@ -3,18 +3,18 @@ package token
 type TokenType string
 
 const (
-	ILLEGAL = "ILLEGAL"	// signies a token/character we dont know about
+	ILLEGAL = "ILLEGAL" // signies a token/character we dont know about
 	EOF     = "EOF"
 
-	IDENT = "IDENT" 
-	INT   = "INT"   
+	IDENT = "IDENT"
+	INT   = "INT"
 
 	STRING = "STRING"
 
 	// Operators
 	ASSIGN   = "="
 	PLUS     = "+"
-	MINUS    = "-"	
+	MINUS    = "-"
 	BANG     = "!"
 	ASTERISK = "*"
 	SLASH    = "/"
@@ -29,10 +29,12 @@ const (
 	COMMA     = ","
 	SEMICOLON = ";"
 
-	LPAREN = "("
-	RPAREN = ")"
-	LBRACE = "{"
-	RBRACE = "}"
+	LPAREN   = "("
+	RPAREN   = ")"
+	LBRACE   = "{"
+	RBRACE   = "}"
+	LBRACKET = "["
+	RBRACKET = "]"
 
 	// Keywords
 	FUNCTION = "FUNCTION"
