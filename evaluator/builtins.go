@@ -1,6 +1,9 @@
 package evaluator
 
-import "monkey/object"
+import (
+	"fmt"
+	"monkey/object"
+)
 
 var builtins = map[string]*object.BuiltIn{
 	"first": &object.BuiltIn{
@@ -37,6 +40,16 @@ var builtins = map[string]*object.BuiltIn{
 				return arr.Elements[length-1]
 			}
 
+			return NULL
+		},
+	},
+	// variadic function, takes an unlimited no. of arguments & prints each on a separate line
+	"puts": &object.BuiltIn{
+		Fn: func(args ...object.Object) object.Object {
+			for _, arg := range args{
+				fmt.Println(arg.Inspect())
+			}
+			
 			return NULL
 		},
 	},
