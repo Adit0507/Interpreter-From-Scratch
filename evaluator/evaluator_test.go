@@ -7,6 +7,52 @@ import (
 	"testing"
 )
 
+func TestHashIndexExpressions(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{
+			`{"foo": 5}["foo"]`,
+			5,
+		},
+		{
+			`{"foo": 5}["bar"]`,
+			nil,
+		},
+		{
+			`let key = "foo"; {"foo": 5}[key]`,
+			5,
+		},
+		{
+			`{}["foo"]`,
+			nil,
+		},
+		{
+			`{5: 5}[5]`,
+			5,
+		},
+		{
+			`{true: 5}[true]`,
+			5,
+		},
+		{
+			`{false: 5}[false]`,
+			5,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		integer, ok := tt.expected.(int)
+		if ok {
+			testIntegerObject(t, evaluated, int64(integer))
+		} else {
+			testNullObject(t, evaluated)
+		}
+	}
+}
+
 func TestHashLiterals(t *testing.T) {
 	input := `let two = "two";
 			{
@@ -33,11 +79,11 @@ func TestHashLiterals(t *testing.T) {
 		FALSE.HashKey():                            6,
 	}
 
-	if len(res.Pairs)!= len(expected){
+	if len(res.Pairs) != len(expected) {
 		t.Fatalf("Hash has wrong num of pairs. got=%d", len(res.Pairs))
 	}
 
-	for expectedKey, expectedValue := range expected{
+	for expectedKey, expectedValue := range expected {
 		pair, ok := res.Pairs[expectedKey]
 		if !ok {
 			t.Errorf("no pair for given key in Pairs")
@@ -288,6 +334,10 @@ func TestErrorHandling(t *testing.T) {
 		{
 			`"Hello" - "World"`,
 			"unknown operator: STRING - STRING",
+		},
+		{
+			`{"name": "Monkey"}[fn(x) { x }];`,
+			"unusable as hash key: FUNCTION",
 		},
 	}
 
