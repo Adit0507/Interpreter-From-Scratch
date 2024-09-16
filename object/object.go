@@ -21,6 +21,7 @@ const (
 	BUILTIN_OBJ      = "BUILTIN"
 	ARRAY_OBJ        = "ARRAY"
 	HASH_OBJ         = "HASH"
+	QUOTE_OBJ        = "QUOTE"
 )
 
 type Function struct {
@@ -184,4 +185,13 @@ func (h *Hash) Inspect() string {
 
 type Hashable interface {
 	HashKey() HashKey
+}
+
+type Quote struct {
+	Node ast.Node
+}
+
+func (q *Quote) Type() ObjectType { return QUOTE_OBJ }
+func (q *Quote) Inspect() string {
+	return "QUOTE(" + q.Node.String() + ")"
 }
