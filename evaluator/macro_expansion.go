@@ -6,18 +6,18 @@ import (
 )
 
 func DefineMacros(program *ast.Program, env *object.Environment) {
-	definitions := []int {}
+	definitions := []int{}
 
-	for i, statement := range program.Statements{
-		if isMacroDefinition(statement){
+	for i, statement := range program.Statements {
+		if isMacroDefinition(statement) {
 			addMacro(statement, env)
 			definitions = append(definitions, i)
 		}
 	}
 
-	for i := len(definitions) -1; i >=0; i = i-1{
+	for i := len(definitions) - 1; i >= 0; i = i - 1 {
 		definitionIndex := definitions[i]
-		program.Statements = append(program.Statements[:definitionIndex], program.Statements[definitionIndex +1:]... )
+		program.Statements = append(program.Statements[:definitionIndex], program.Statements[definitionIndex+1:]...)
 
 	}
 }
@@ -70,7 +70,7 @@ func ExpandMacros(program ast.Node, env *object.Environment) ast.Node {
 		return quote.Node
 	})
 }
-func isMacroCall(exp *ast.CallExpression,env *object.Environment,) (*object.Macro, bool) {
+func isMacroCall(exp *ast.CallExpression, env *object.Environment) (*object.Macro, bool) {
 	identifier, ok := exp.Function.(*ast.Identifier)
 	if !ok {
 		return nil, false

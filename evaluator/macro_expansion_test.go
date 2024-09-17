@@ -29,6 +29,19 @@ func TestExpandMacros(t *testing.T) {
 			`,
 			`(10 - 5) - (2 + 2)`,
 		},
+		{
+			`
+			let unless = macro(condition, consequence, alternative) {
+			quote(if (!(unquote(condition))) {
+			unquote(consequence);
+			} else {
+			unquote(alternative);
+			});
+			};
+			unless(10 > 5, puts("not greater"), puts("greater"));
+			`,
+			`if (!(10 > 5)) { puts("not greater") } else { puts("greater") }`,
+		},
 	}
 
 	for _, tt := range tests {
@@ -39,7 +52,7 @@ func TestExpandMacros(t *testing.T) {
 		DefineMacros(program, env)
 		expanded := ExpandMacros(program, env)
 		if expanded.String() != expected.String() {
-			t.Errorf("not equal. want=%q, got=%q",expected.String(), expanded.String())
+			t.Errorf("not equal. want=%q, got=%q", expected.String(), expanded.String())
 		}
 	}
 }
